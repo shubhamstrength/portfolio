@@ -28,3 +28,6 @@ All motion respects the OS "reduce motion" setting via `<MotionConfig reducedMot
 ## Deploy
 
 `dist/` is a static site with relative paths, so it can go on Vercel, Netlify, GitHub Pages or any static host.
+
+Pushes to `main` deploy automatically to GitHub Pages via `.github/workflows/deploy.yml`:
+https://shubhamstrength.github.io/portfolio/
