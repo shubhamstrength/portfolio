@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react'
 import { profile } from '../data/resume'
-import { ComponentPress } from './press/ComponentPress'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -65,60 +64,47 @@ export function Hero() {
       <div className="hero__grid" aria-hidden />
 
       <motion.div className="hero__inner container" style={{ y, opacity }}>
-        <div className="hero__layout">
-          <div className="hero__copy">
-            <motion.p
-              className="eyebrow"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease }}
-            >
-              <span className="pulse" /> Based in {profile.location} · 10+ years on the web
-            </motion.p>
+        <motion.p
+          className="eyebrow"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1, ease }}
+        >
+          <span className="pulse" /> Based in {profile.location} · 10+ years on the web
+        </motion.p>
 
-            <h1 className="hero__title" aria-label={profile.name}>
-              <SplitWord word={profile.firstName} delay={0.2} />
-              <br />
-              <span className="hero__title-italic">
-                <SplitWord word={profile.lastName} delay={0.5} />
-              </span>
-            </h1>
+        <h1 className="hero__title" aria-label={profile.name}>
+          <SplitWord word={profile.firstName} delay={0.2} />
+          <br />
+          <span className="hero__title-italic">
+            <SplitWord word={profile.lastName} delay={0.5} />
+          </span>
+        </h1>
 
-            <motion.div
-              className="hero__sub"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.0, ease }}
-            >
-              <p>
-                {profile.title} crafting fast, accessible interfaces with <RotatingRole />
-              </p>
-            </motion.div>
+        <motion.div
+          className="hero__sub"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.0, ease }}
+        >
+          <p>
+            {profile.title} crafting fast, accessible interfaces with <RotatingRole />
+          </p>
+        </motion.div>
 
-            <motion.div
-              className="hero__cta"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.2, ease }}
-            >
-              <a href="#work" className="btn btn--primary">
-                See my work
-              </a>
-              <a href={`mailto:${profile.email}`} className="btn btn--ghost">
-                Get in touch
-              </a>
-            </motion.div>
-          </div>
-
-          <motion.div
-            className="hero__figure"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.1, ease }}
-          >
-            <ComponentPress />
-          </motion.div>
-        </div>
+        <motion.div
+          className="hero__cta"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.2, ease }}
+        >
+          <a href="#work" className="btn btn--primary">
+            See my work
+          </a>
+          <a href={`mailto:${profile.email}`} className="btn btn--ghost">
+            Get in touch
+          </a>
+        </motion.div>
       </motion.div>
 
       <motion.a

@@ -1,55 +1,16 @@
-import { useRef } from 'react'
-import { motion, useScroll, useSpring } from 'motion/react'
-import { experience, type Role } from '../data/resume'
+import { useCallback, useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import { SectionLabel } from './Reveal'
+import { WorkCabinet } from './cabinet/WorkCabinet'
+import { ROLES, tenureText } from './cabinet/model'
 
-function RoleCard({ role, index }: { role: Role; index: number }) {
-  return (
-    <motion.li
-      className="role"
-      initial={{ opacity: 0, x: -24 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <motion.span
-        className="role__dot"
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true, margin: '-100px' }}
-        transition={{ type: 'spring', stiffness: 300, damping: 18, delay: 0.15 }}
-        aria-hidden
-      />
-      <div className="role__meta">
-        <span className="mono">{role.period}</span>
-        <span className="muted">{role.location}</span>
-      </div>
-      <div className="role__card">
-        <span className="role__index mono">{String(index + 1).padStart(2, '0')}</span>
-        <h3>
-          {role.title} <span className="role__at">at</span> <span className="accent">{role.company}</span>
-        </h3>
-        <ul className="role__highlights">
-          {role.highlights.map((h) => (
-            <li key={h}>{h}</li>
-          ))}
-        </ul>
-        <ul className="tags" aria-label="Stack">
-          {role.stack.map((t) => (
-            <li key={t} className="tag">
-              {t}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </motion.li>
-  )
-}
+const ease = [0.22, 1, 0.36, 1] as const
+const LATEST = ROLES.length - 1
 
 export function Experience() {
-  const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 70%', 'end 60%'] })
-  const scaleY = useSpring(scrollYProgress, { stiffness: 120, damping: 24 })
+  const [selected, setSelected] = useState(LATEST)
+  const select = useCallback((index: number) => setSelected(index), [])
+  const { role, months } = ROLES[selected]
 
   return (
     <section id="work" className="section container">
@@ -57,15 +18,70 @@ export function Experience() {
       <h2 className="display display--sm">
         A decade across <em>insurance</em>, <em>cloud</em> and <em>consulting</em>.
       </h2>
-      <div className="timeline" ref={ref}>
-        <div className="timeline__rail" aria-hidden>
-          <motion.div className="timeline__fill" style={{ scaleY }} />
+
+      <div className="work">
+        <motion.div
+          className="work__figure"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.8, ease }}
+        >
+          <WorkCabinet selected={selected} onSelect={select} />
+        </motion.div>
+
+        <div className="work__detail">
+          <div className="work__picker" role="group" aria-label="Choose a role">
+            {ROLES.map((_, index) => index)
+              .reverse()
+              .map((index) => (
+                <button
+                  key={ROLES[index].role.company}
+                  type="button"
+                  className={`work__pick${index === selected ? ' work__pick--active' : ''}`}
+                  aria-pressed={index === selected}
+                  onClick={() => select(index)}
+                >
+                  {ROLES[index].role.company}
+                </button>
+              ))}
+          </div>
+
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.article
+              key={role.company}
+              className="role__card"
+              aria-live="polite"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.35, ease }}
+            >
+              <span className="role__index mono">{String(LATEST - selected + 1).padStart(2, '0')}</span>
+              <div className="work__meta mono">
+                <span>{role.period}</span>
+                <span className="muted">
+                  {tenureText(months)} · {role.location}
+                </span>
+              </div>
+              <h3>
+                {role.title} <span className="role__at">at</span> <span className="accent">{role.company}</span>
+              </h3>
+              <ul className="role__highlights">
+                {role.highlights.map((h) => (
+                  <li key={h}>{h}</li>
+                ))}
+              </ul>
+              <ul className="tags" aria-label="Stack">
+                {role.stack.map((t) => (
+                  <li key={t} className="tag">
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </motion.article>
+          </AnimatePresence>
         </div>
-        <ol className="timeline__list">
-          {experience.map((role, i) => (
-            <RoleCard key={role.company} role={role} index={i} />
-          ))}
-        </ol>
       </div>
     </section>
   )
