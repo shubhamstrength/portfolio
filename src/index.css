@@ -104,6 +104,13 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var
 .split { display: inline-flex; overflow: hidden; padding-bottom: 0.08em; }
 .split__char { display: inline-block; transform-origin: bottom left; }
 
+.hero__layout { display: grid; gap: 56px; align-items: center; }
+.hero__figure { width: 100%; max-width: 620px; }
+@media (min-width: 1100px) {
+  .hero__layout { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 48px; }
+  .hero__layout .hero__title { font-size: clamp(5rem, 8.4vw, 9rem); }
+  .hero__figure { justify-self: end; }
+}
 .hero__sub { font-size: clamp(1.1rem, 2.2vw, 1.45rem); color: var(--muted); max-width: 640px; }
 .rotator { display: inline-block; position: relative; color: var(--text); font-weight: 500; }
 .rotator__word { display: inline-block; }

@@ -1,0 +1,53 @@
+/* Site tokens for the component press: the card matches the page surface and the
+   one lit part (the die on the plunger) takes the site accent. */
+.iso.press {
+  --anatomy-card: #111116;
+  --anatomy-paper: #111116;
+  --anatomy-face: #191920;
+  --anatomy-top: #1b1b22;
+  --anatomy-shade-0: #0d0d11;
+  --anatomy-shade-1: #111116;
+  --anatomy-shade-2: #14141a;
+  --anatomy-shade-3: #17171e;
+  --anatomy-hi: #dedce4;
+  --anatomy-mid: #7a7983;
+  --anatomy-lo: #4a4952;
+  --anatomy-faint: #2e2d35;
+  --anatomy-lit: var(--accent);
+  --anatomy-lit-top: #2f3a1a;
+  --anatomy-lit-shade: #222a13;
+  --anatomy-text: var(--muted);
+  --anatomy-muted: #6c6a73;
+  --anatomy-mono: var(--mono);
+  margin: 0;
+}
+
+.iso.press .iso-plate {
+  border-radius: 24px;
+  box-shadow: 0 0 0 1px var(--border), 0 30px 80px -40px rgba(0, 0, 0, 0.8);
+  padding: 40px 12px;
+  overflow: hidden;
+}
+
+.press__stage {
+  touch-action: pan-y;
+  cursor: crosshair;
+  border-radius: 12px;
+}
+
+.press__stage:focus-visible {
+  outline: 1px solid var(--anatomy-muted);
+  outline-offset: 6px;
+}
+
+@media (max-width: 560px) {
+  .iso.press .iso-plate { padding: 40px 0 56px; }
+  .iso.press .iso-plate-corner[data-corner='hint'] { bottom: 22px; }
+  .iso.press .iso-svg { width: 106%; margin: 0 -3%; }
+}
+
+.press__hint--touch { display: none; }
+@media (hover: none) {
+  .press__hint--mouse { display: none; }
+  .press__hint--touch { display: inline; }
+}
