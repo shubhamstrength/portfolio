@@ -1,0 +1,52 @@
+/* Line-art portrait in the hero. Colours are set here so the SVG stays readable. */
+.avatar {
+  --ink: #0b0b0f;
+  --skin: #c99470;
+  --skin-shade: #a9714f;
+  --hair: #16141a;
+  --beard: #2a1f1a;
+  --navy: #1e2a5a;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.avatar:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 24px; }
+.avatar__svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+.avatar__ring { fill: rgba(255, 255, 255, 0.02); stroke: var(--border); stroke-width: 1.5; stroke-dasharray: 3 7; }
+.avatar__line, .avatar__line path, .avatar__line ellipse { stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+.avatar__fine { stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; opacity: 0.7; }
+
+.avatar__skin { fill: var(--skin); }
+.avatar__skin-shade { fill: var(--skin-shade); }
+.avatar__hair { fill: var(--hair); }
+.avatar__hair-tone { fill: none; stroke: #3a3644; stroke-width: 2.4; stroke-linecap: round; }
+.avatar__beard { fill: var(--beard); }
+.avatar__lip { fill: #6e3b33; }
+.avatar__teeth { fill: #f7f3ec; stroke-width: 1.5 !important; }
+.avatar__shirt { fill: var(--text); }
+.avatar__fold { stroke: #c9c6bf !important; stroke-width: 2 !important; }
+.avatar__button { fill: #d6d3cc; stroke-width: 1.5 !important; }
+.avatar__eye { fill: #f7f3ec; }
+.avatar__pupil { fill: var(--ink); }
+.avatar__brow path { fill: none; stroke: var(--hair); stroke-width: 6; stroke-linecap: round; }
+
+.avatar__frame path { fill: var(--navy); stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; }
+.avatar__lens path { fill: #0c1020; }
+.avatar__temple { stroke: var(--navy); stroke-width: 5; stroke-linecap: round; }
+.avatar__rivet { fill: #d8dbe6; }
+
+.avatar__hint {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
