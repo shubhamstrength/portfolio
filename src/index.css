@@ -100,6 +100,14 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var
 @keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(198,243,107,0); } 100% { box-shadow: 0 0 0 0 rgba(198,243,107,0); } }
 
 .hero__title { font-family: var(--sans); font-weight: 600; font-size: clamp(3.6rem, 14vw, 11rem); line-height: 0.92; letter-spacing: -0.045em; margin: 28px 0 32px; }
+.hero__head { display: grid; grid-template-columns: minmax(0, 1fr) clamp(240px, 30vw, 400px); align-items: center; gap: clamp(16px, 3vw, 40px); }
+.hero__head .hero__title { font-size: clamp(3.6rem, 10.5vw, 9.5rem); }
+.hero__avatar { margin-top: 12px; }
+@media (max-width: 860px) {
+  .hero__head { grid-template-columns: 1fr; gap: 0; }
+  .hero__avatar { order: -1; width: clamp(160px, 46vw, 220px); margin: 20px 0 0; }
+  .hero__head .hero__title { font-size: clamp(3.6rem, 14vw, 7rem); margin-top: 20px; }
+}
 .hero__title-italic { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.02em; color: var(--accent); }
 .split { display: inline-flex; overflow: hidden; padding-bottom: 0.08em; }
 .split__char { display: inline-block; transform-origin: bottom left; }
