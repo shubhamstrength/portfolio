@@ -1,4 +1,4 @@
-/* Portrait in the hero. Fills for the traced layers live in Avatar.tsx. */
+/* Hand-drawn portrait in the hero. */
 .avatar {
   display: grid;
   justify-items: center;
@@ -15,20 +15,45 @@
 }
 .avatar:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 24px; }
 .avatar__svg { width: 100%; height: auto; display: block; overflow: visible; }
+.avatar__hint { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.02em; }
 
-.avatar__ring { fill: rgba(255, 255, 255, 0.02); stroke: var(--border); stroke-width: 2; stroke-dasharray: 4 10; }
+/* Clouds drift slowly; the pointer adds parallax on top. */
+.avatar .av-drift { animation: av-drift 18s ease-in-out infinite alternate; }
+@keyframes av-drift { to { transform: translateX(28px); } }
+@media (prefers-reduced-motion: reduce) { .avatar .av-drift { animation: none; } }
 
-.avatar__brow { fill: #1c1414; }
-.avatar__eye { fill: #f3ebe3; }
-.avatar__iris { fill: #4a2e24; }
-.avatar__pupil { fill: #120d0c; }
-.avatar__catchlight { fill: #fff; }
-.avatar__lid { fill: none; stroke: #2a1c1a; stroke-width: 3.5; stroke-linecap: round; }
-.avatar__rivet { fill: #d8dbe6; }
-
-.avatar__hint {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  color: var(--muted);
-  letter-spacing: 0.02em;
-}
+.avatar { --line: #4a2f27; --skin: #e8b08b; --skin-shade: #cc8a68; --blush: #ef8b78; --beard: #3a2925; --stubble: #7a5646; --hair: #1d1a28; --hair-sheen: #45577f; --shirt: #fbf8f2; --shirt-shade: #cdd7e8; --shirt-line: #7d8bab; --navy: #2b3b7c; }
+.avatar .av-ln { stroke: var(--line); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+.avatar .av-ln-soft { fill: none; stroke: var(--line); stroke-width: 2.4; stroke-linecap: round; opacity: 0.75; }
+.avatar .av-skin { fill: var(--skin); }
+.avatar .av-skin-shade { fill: var(--skin-shade); }
+.avatar .av-hairline-shade { fill: var(--skin-shade); opacity: 0.6; }
+.avatar .av-blush { fill: var(--blush); opacity: 0.4; }
+.avatar .av-beard { fill: var(--beard); }
+.avatar .av-stubble { fill: var(--stubble); opacity: 0.45; }
+.avatar .av-beard-line { fill: none; stroke: #5a4038; stroke-width: 2; stroke-linecap: round; }
+.avatar .av-mouth { fill: #7a3330; }
+.avatar .av-teeth { fill: #fffaf2; }
+.avatar .av-lip { fill: none; stroke: #b0645a; stroke-width: 3; stroke-linecap: round; }
+.avatar .av-hair { fill: var(--hair); stroke: #120f1a; stroke-width: 3; stroke-linejoin: round; }
+.avatar .av-hair-sheen { fill: var(--hair-sheen); opacity: 0.75; }
+.avatar .av-hair-strand { fill: none; stroke: #3b4262; stroke-width: 2.6; stroke-linecap: round; }
+.avatar .av-brow { fill: none; stroke: #1d1a28; stroke-width: 9; stroke-linecap: round; }
+.avatar .av-eye-white { fill: #fffaf3; stroke: var(--line); stroke-width: 2; }
+.avatar .av-iris { fill: #2b1d18; }
+.avatar .av-catch { fill: #fff; }
+.avatar .av-lid { fill: none; stroke: #1d1416; stroke-width: 4.5; stroke-linecap: round; }
+.avatar .av-shirt { fill: var(--shirt); stroke: var(--shirt-line); stroke-width: 3; stroke-linejoin: round; }
+.avatar .av-shirt-shade { fill: var(--shirt-shade); }
+.avatar .av-shirt-fold { fill: none; stroke: var(--shirt-line); stroke-width: 2.4; stroke-linecap: round; opacity: 0.8; }
+.avatar .av-button { fill: #e9edf5; stroke: var(--shirt-line); stroke-width: 1.6; }
+.avatar .av-frame { fill: none; stroke: var(--navy); stroke-width: 11; stroke-linejoin: round; }
+.avatar .av-frame-edge { fill: none; stroke: #16204a; stroke-width: 2; stroke-linejoin: round; }
+.avatar .av-temple { fill: none; stroke: var(--navy); stroke-width: 8; stroke-linecap: round; }
+.avatar .av-rivet { fill: #e3e6ef; }
+.avatar .av-cloud { fill: #fff; }
+.avatar .av-cloud-shade { fill: #dfeaf6; }
+.avatar .av-tower { fill: #ecd6ae; }
+.avatar .av-tower-shade { fill: #d7bb8f; }
+.avatar .av-lens { stroke: var(--navy); stroke-width: 11; stroke-linejoin: round; }
+.avatar .av-skin-light { fill: #f6d0b0; opacity: 0.8; }
