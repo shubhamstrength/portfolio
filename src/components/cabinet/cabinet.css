@@ -1,50 +1,144 @@
-/* Site tokens for the card cabinet: the card matches the page surface and the one
-   lit part (the open drawer's front) takes the site accent. */
-.iso.cabinet {
-  --anatomy-card: #111116;
-  --anatomy-paper: #111116;
-  --anatomy-face: #191920;
-  --anatomy-top: #1b1b22;
-  --anatomy-shade-0: #0b0b0e;
-  --anatomy-shade-1: #111116;
-  --anatomy-shade-2: #14141a;
-  --anatomy-shade-3: #17171e;
-  --anatomy-hi: #dedce4;
-  --anatomy-mid: #7a7983;
-  --anatomy-lo: #4a4952;
-  --anatomy-faint: #2e2d35;
-  --anatomy-lit: var(--accent);
-  --anatomy-lit-top: #262e17;
-  --anatomy-lit-shade: #1a1f10;
-  --anatomy-text: var(--muted);
-  --anatomy-muted: #6c6a73;
-  --anatomy-mono: var(--mono);
-  margin: 0;
+/* Card cabinet, front view from slightly above. */
+.cab {
+  --steel: #16161b;
+  --steel-hi: #1f1f26;
+  --steel-edge: #2b2b33;
+  --hollow: #0c0c10;
+  max-width: 980px;
+  margin-inline: auto;
 }
 
-.iso.cabinet .cabinet__plate {
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
+/* The top of the case, foreshortened because it is seen from above. */
+.cab__top {
+  height: 22px;
+  margin-inline: 2.5%;
+  background: linear-gradient(to bottom, #121217, var(--steel-hi));
+  clip-path: polygon(1.5% 0, 98.5% 0, 100% 100%, 0 100%);
 }
 
-.cabinet__footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 6px 16px;
-  margin-top: 8px;
-  color: var(--anatomy-muted);
+.cab__case {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--steel-edge);
+  border-radius: 6px 6px 10px 10px;
+  background: var(--hollow);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.cab__plinth {
+  height: 14px;
+  margin-inline: 4%;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(to bottom, #09090c, #131318);
+}
+
+.drawer { position: relative; }
+.drawer--open { z-index: 1; }
+
+/* Drawer front */
+.drawer__heading { margin: 0; font: inherit; }
+.drawer__front {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: calc(64px + var(--tenure) * 1.1px);
+  padding: 14px clamp(14px, 2.4vw, 24px);
+  border: 1px solid var(--steel-edge);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, var(--steel-hi), var(--steel));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06), 0 1px 0 #050507;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s, border-color 0.3s;
+}
+.drawer__front:hover { border-color: #3a3a44; }
+.drawer__front:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* Pulled towards the viewer, so it reads a touch larger and casts a shadow. */
+.drawer--open .drawer__front {
+  transform: scale(1.02);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08), 0 18px 30px -12px rgba(0, 0, 0, 0.8);
+}
+
+/* Label holder: a small frame with a card in it. */
+.drawer__label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
+  align-items: baseline;
+  justify-self: start;
+  max-width: 100%;
+  padding: 8px 14px;
+  border: 2px solid #34343d;
+  border-radius: 4px;
+  background: #101014;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
+  transition: border-color 0.3s;
+}
+.drawer__index { grid-row: span 2; color: var(--muted); font-size: 0.72rem; }
+.drawer__company { font-size: clamp(1.05rem, 2vw, 1.3rem); font-weight: 500; letter-spacing: -0.02em; }
+.drawer__title { color: var(--muted); font-size: 0.85rem; }
+.drawer--open .drawer__label { border-color: var(--accent); }
+.drawer--open .drawer__index { color: var(--accent); }
+
+/* Bar pull */
+.drawer__pull {
+  width: clamp(64px, 12vw, 132px);
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #4a4953, #2a2a31);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.6), inset 0 1px rgba(255, 255, 255, 0.15);
+  transition: background 0.3s;
+}
+.drawer__front:hover .drawer__pull { background: linear-gradient(to bottom, #5a5963, #33333b); }
+.drawer--open .drawer__pull { background: linear-gradient(to bottom, var(--accent), #8fb63f); }
+
+.drawer__period { display: grid; gap: 2px; justify-self: end; text-align: right; }
+
+/* The inside of the open drawer, seen from above: back wall at the top, side walls
+   left and right, floor in the middle. Border colours give the mitred walls. */
+.drawer__inside { overflow: hidden; margin-inline: -1%; }
+.drawer__well {
+  padding: 18px clamp(12px, 2.4vw, 24px) 22px;
+  border-style: solid;
+  border-width: 16px 12px 0;
+  border-color: #1c1c22 #131318 transparent #15151a;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(to bottom, #08080b, #101014);
+}
+
+/* Index card resting on the floor, with tool tabs along its top edge. */
+.drawer__card { display: grid; }
+.drawer__tabs { display: flex; flex-wrap: wrap; gap: 4px; padding-left: 14px; }
+.drawer__tabs li {
+  padding: 5px 10px 4px;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  background: #17171d;
+  color: var(--muted);
+  font-family: var(--mono);
   font-size: 0.7rem;
-  letter-spacing: 0.06em;
 }
-.cabinet__footer [data-readout] { color: var(--anatomy-text); font-variant-numeric: tabular-nums; }
+.drawer__tabs li:first-child { background: #1b1f12; color: var(--accent); }
+.drawer__sheet {
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #16161c;
+  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.9);
+}
+.drawer__meta { margin: 0; color: var(--muted); }
+.drawer__sheet .role__highlights { margin: 16px 0 0; }
 
-.cabinet__stage { touch-action: pan-y; cursor: pointer; border-radius: 12px; }
-.cabinet__stage:focus-visible { outline: 1px solid var(--anatomy-muted); outline-offset: 6px; }
-
-.cabinet__hint--touch { display: none; }
-@media (hover: none) {
-  .cabinet__hint--mouse { display: none; }
-  .cabinet__hint--touch { display: inline; }
+@media (max-width: 640px) {
+  .drawer__front { grid-template-columns: minmax(0, 1fr) auto; row-gap: 12px; }
+  .drawer__label { grid-column: 1 / -1; padding: 6px 10px; }
+  .drawer__period { grid-row: 2; grid-column: 1; display: flex; flex-wrap: wrap; gap: 0 10px; justify-self: start; text-align: left; font-size: 0.72rem; }
+  .drawer__pull { grid-row: 2; grid-column: 2; justify-self: end; width: 56px; height: 10px; }
+  .drawer__tabs { padding-left: 6px; }
 }
