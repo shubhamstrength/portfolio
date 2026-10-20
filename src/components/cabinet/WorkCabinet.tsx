@@ -103,23 +103,8 @@ export function WorkCabinet({ selected, onSelect }: Props) {
   const { role, months } = ROLES[selected]
 
   return (
-    <figure className="iso cabinet">
-      <div className="iso-plate">
-        <div className="iso-plate-corners" aria-hidden="true">
-          <span className="iso-plate-corner" data-corner="fig">
-            Fig 2
-          </span>
-          <span className="iso-plate-corner" data-corner="title">
-            Card cabinet
-          </span>
-          <span className="iso-plate-corner" data-corner="hint">
-            <span className="cabinet__hint--mouse">Hover a drawer to open it</span>
-            <span className="cabinet__hint--touch">Tap a drawer to open it</span>
-          </span>
-          <span className="iso-plate-corner" data-corner="readout" data-readout="">
-            {readoutOf(selected)}
-          </span>
-        </div>
+    <div className="iso cabinet">
+      <div className="iso-plate cabinet__plate">
         <div
           ref={anchor}
           className="iso-stage cabinet__stage"
@@ -153,10 +138,14 @@ export function WorkCabinet({ selected, onSelect }: Props) {
             ))}
           </svg>
         </div>
+        <div className="cabinet__footer mono" aria-hidden="true">
+          <span>
+            <span className="cabinet__hint--mouse">Hover a drawer to open it</span>
+            <span className="cabinet__hint--touch">Tap a drawer to open it</span>
+          </span>
+          <span data-readout="">{readoutOf(selected)}</span>
+        </div>
       </div>
-      <figcaption className="iso-legend cabinet__caption">
-        Each drawer is as tall as my time in that role, and the open drawer holds one card per tool I used there.
-      </figcaption>
-    </figure>
+    </div>
   )
 }
