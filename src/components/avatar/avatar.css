@@ -10,7 +10,6 @@
   color: inherit;
   font: inherit;
   cursor: pointer;
-  perspective: 900px;
   -webkit-tap-highlight-color: transparent;
 }
 .avatar:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 50%; }
@@ -24,25 +23,16 @@
   overflow: hidden;
   background: #1d5fae;
   box-shadow: 0 0 0 1px var(--border), 0 30px 80px -30px rgba(139, 123, 255, 0.55);
-  /* Keeps the rounded clip while the badge tilts in 3D (Safari). */
   isolation: isolate;
 }
 
-.avatar__scene,
-.avatar__figure,
 .avatar__layer {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
-/* Slightly oversized so the parallax never shows the scene's edge. */
-.avatar__scene { inset: -6%; width: 112%; height: 112%; max-width: none; object-fit: cover; user-select: none; }
-/* Oversized a little too, so the cut-off shirt never lifts off the bottom edge. */
-.avatar__figure { display: block; inset: -3%; width: 106%; height: 106%; transform-origin: 45% 80%; }
-.avatar__figure img { display: block; width: 100%; height: 100%; user-select: none; }
-.avatar__head { position: absolute; inset: 0; display: block; transform-origin: 48% 66%; }
-.avatar__head img { position: absolute; inset: 0; }
 .avatar__sparkle { fill: #ffb43a; filter: drop-shadow(0 0 6px rgba(255, 196, 90, 0.9)); }
 
 .avatar__hint { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.02em; }
+.avatar canvas.avatar__layer { display: block; }

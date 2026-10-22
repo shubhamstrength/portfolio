@@ -1,9 +1,9 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { motion, useReducedMotion, useTransform } from 'motion/react'
+import { motion, useReducedMotion, useSpring, useTransform } from 'motion/react'
 import { usePointerLook } from './usePointerLook'
-import bodySrc from '../../assets/avatar/body.webp'
-import headSrc from '../../assets/avatar/head.webp'
-import sceneSrc from '../../assets/avatar/scene.webp'
+import { DepthPortrait } from './DepthPortrait'
+import portraitSrc from '../../assets/avatar/portrait.webp'
+import depthSrc from '../../assets/avatar/depth.png'
 import './avatar.css'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -28,10 +28,9 @@ const star = (x: number, y: number, r: number) =>
   `M${x} ${y - r} Q${x + r * 0.18} ${y - r * 0.18} ${x + r} ${y} Q${x + r * 0.18} ${y + r * 0.18} ${x} ${y + r} Q${x - r * 0.18} ${y + r * 0.18} ${x - r} ${y} Q${x - r * 0.18} ${y - r * 0.18} ${x} ${y - r} Z`
 
 /**
- * Painted portrait split into a background scene, the body and the head. The head turns
- * to look towards the pointer wherever it is on the page, while the other layers shift by
- * different amounts so the badge reads as a little diorama. Hovering or pressing it brings
- * the figure forward, sweeps a glint over the sunglasses and makes the stars flare.
+ * Painted portrait rendered as a 3D photo from a depth map: the face turns towards the
+ * pointer wherever it is on the page while the sky shifts the other way. Hovering or
+ * pressing it moves in a little, sweeps a glint over the sunglasses and makes the stars flare.
  */
 export function Avatar({ name }: { name: string }) {
   const ref = useRef<HTMLButtonElement>(null)
@@ -54,20 +53,15 @@ export function Avatar({ name }: { name: string }) {
     }
   }, [reduce])
 
-  const tiltY = useTransform(x, (v) => v * 10)
-  const tiltX = useTransform(y, (v) => v * -6)
-  const sceneX = useTransform(x, (v) => v * -14)
-  const sceneY = useTransform(y, (v) => v * -8)
-  const figureX = useTransform(x, (v) => v * 10)
-  const figureY = useTransform(y, (v) => v * 6)
-  const headX = useTransform(x, (v) => v * 14)
-  const headY = useTransform(y, (v) => v * 8)
-  const headTurn = useTransform(x, (v) => v * 22)
-  const headNod = useTransform(y, (v) => v * -14)
-  const headTilt = useTransform(x, (v) => v * 5)
-  const sparkleX = useTransform(x, (v) => v * -26)
-  const sparkleY = useTransform(y, (v) => v * -14)
-  const glintX = useTransform(x, (v) => v * -60)
+  const zoom = useSpring(1.06, { stiffness: 120, damping: 20 })
+  useEffect(() => zoom.set(active && !reduce ? 1.12 : 1.06), [active, reduce, zoom])
+
+  // The lenses sit near the front of the depth map, so the glint travels with the face.
+  const lensX = useTransform(x, (v) => v * 13)
+  const lensY = useTransform(y, (v) => v * 13)
+  const sparkleX = useTransform(x, (v) => v * -10)
+  const sparkleY = useTransform(y, (v) => v * -6)
+  const glintX = useTransform(x, (v) => v * -40)
 
   const lensClip = `lens-${uid}`
   const glint = `glint-${uid}`
@@ -86,15 +80,37 @@ export function Avatar({ name }: { name: string }) {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 1, delay: 0.5, ease }}
     >
-      <motion.span className="avatar__badge" style={{ rotateX: tiltX, rotateY: tiltY }}>
-        <motion.img
-          className="avatar__scene"
-          src={sceneSrc}
-          alt=""
-          draggable={false}
-          style={{ x: sceneX, y: sceneY }}
-        />
-
+      <span className="avatar__badge">
+        <DepthPortrait image={portraitSrc} depth={depthSrc} x={x} y={y} zoom={zoom} />
+        <svg className="avatar__layer" viewBox="0 0 620 620" aria-hidden>
+          <defs>
+            <clipPath id={lensClip}>
+              {lenses.map((d) => (
+                <path key={d} d={d} />
+              ))}
+            </clipPath>
+            <linearGradient id={glint} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#fff" stopOpacity="0" />
+              <stop offset="0.5" stopColor="#fff" stopOpacity="0.6" />
+              <stop offset="1" stopColor="#fff" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <motion.g style={{ scale: zoom, originX: '310px', originY: '310px' }}>
+            <motion.g style={{ x: lensX, y: lensY }}>
+              <g clipPath={`url(#${lensClip})`}>
+                <motion.g style={{ x: glintX }}>
+                  <motion.g
+                    animate={{ x: active && !reduce ? [-160, 160] : 0 }}
+                    transition={{ duration: 0.8, ease }}
+                  >
+                    <path fill={`url(#${glint})`} d="M206 310 L246 226 L262 226 L222 310 Z" />
+                    <path fill={`url(#${glint})`} d="M286 310 L326 226 L342 226 L302 310 Z" />
+                  </motion.g>
+                </motion.g>
+              </g>
+            </motion.g>
+          </motion.g>
+        </svg>
         <motion.svg className="avatar__layer" viewBox="0 0 620 620" aria-hidden style={{ x: sparkleX, y: sparkleY }}>
           {sparkles.map((s) => (
             <motion.path
@@ -117,54 +133,7 @@ export function Avatar({ name }: { name: string }) {
             />
           ))}
         </motion.svg>
-
-        <motion.span
-          className="avatar__figure"
-          style={{ x: figureX, y: figureY }}
-          animate={{ scale: active ? 1.05 : 1 }}
-          transition={{ duration: reduce ? 0 : 0.5, ease }}
-        >
-          <img src={bodySrc} alt="" draggable={false} />
-          <motion.span
-            className="avatar__head"
-            style={{
-              x: headX,
-              y: headY,
-              rotate: headTilt,
-              rotateY: headTurn,
-              rotateX: headNod,
-              transformPerspective: 700,
-            }}
-          >
-            <img src={headSrc} alt="" draggable={false} />
-            <svg className="avatar__layer" viewBox="0 0 620 620" aria-hidden>
-              <defs>
-                <clipPath id={lensClip}>
-                  {lenses.map((d) => (
-                    <path key={d} d={d} />
-                  ))}
-                </clipPath>
-                <linearGradient id={glint} x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#fff" stopOpacity="0" />
-                  <stop offset="0.5" stopColor="#fff" stopOpacity="0.6" />
-                  <stop offset="1" stopColor="#fff" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <g clipPath={`url(#${lensClip})`}>
-                <motion.g style={{ x: glintX }}>
-                  <motion.g
-                    animate={{ x: active && !reduce ? [-160, 160] : 0 }}
-                    transition={{ duration: 0.8, ease }}
-                  >
-                    <path fill={`url(#${glint})`} d="M206 310 L246 226 L262 226 L222 310 Z" />
-                    <path fill={`url(#${glint})`} d="M286 310 L326 226 L342 226 L302 310 Z" />
-                  </motion.g>
-                </motion.g>
-              </g>
-            </svg>
-          </motion.span>
-        </motion.span>
-      </motion.span>
+      </span>
       <span className="avatar__hint" aria-hidden>
         hover or tap ✦
       </span>

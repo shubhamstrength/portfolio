@@ -168,6 +168,9 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var
 .work .role__card { padding: 0; border: 0; border-radius: 0; background: none; }
 .work .role__card:hover { background: none; }
 .work .role__index { top: 2px; right: 0; }
+.work__stage { display: grid; }
+.work__stage > * { grid-area: 1 / 1; }
+.work__ghost { position: relative; visibility: hidden; pointer-events: none; }
 .work__picker { display: flex; flex-wrap: wrap; gap: 8px; }
 .work__pick { font: inherit; font-size: 0.9rem; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s; }
 .work__pick:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
