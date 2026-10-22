@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react'
 import { profile } from '../data/resume'
 import { Avatar } from './avatar/Avatar'
+import { HeroCode } from './HeroCode'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -62,7 +63,7 @@ export function Hero() {
         <div className="orb orb--b" />
         <div className="orb orb--c" />
       </motion.div>
-      <div className="hero__grid" aria-hidden />
+      <HeroCode />
 
       <motion.div className="hero__inner container" style={{ y, opacity }}>
         <motion.p
