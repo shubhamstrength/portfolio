@@ -1,6 +1,7 @@
 import { experience, type Role } from '../../data/resume'
 
-// One cabinet drawer per role, sized by tenure.
+// The truth behind the cabinet: one drawer per role, each as tall as the time spent
+// there, holding one index card per tool in that role's stack.
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -21,5 +22,10 @@ export const tenureText = (months: number) => {
   return [years ? `${years} yr` : '', rest ? `${rest} mo` : ''].filter(Boolean).join(' ')
 }
 
-// Latest role in the top drawer; each drawer front is as tall as the time spent there.
-export const DRAWERS = experience.map((role) => ({ role, months: monthsIn(role) }))
+// Oldest at the bottom, so the stack reads upward like the career did.
+export const ROLES = [...experience].reverse().map((role) => ({ role, months: monthsIn(role) }))
+
+export const readoutOf = (index: number) => {
+  const { role, months } = ROLES[index]
+  return `${role.company} · ${tenureText(months)} · ${role.stack.length} tools`
+}
